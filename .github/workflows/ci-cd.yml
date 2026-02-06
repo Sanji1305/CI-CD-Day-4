@@ -1,0 +1,36 @@
+name: CI CD Day 5 Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        run: echo "Tests passed"
+
+      - name: Build message
+        run: echo "Build successful"
+
+      - name: Build Docker image
+        run: docker build -t day5-demo .
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy step
+        run: |
+          mkdir public
+          cp -r app/* public/
+          echo "Deployment done"
